@@ -3,8 +3,10 @@
 ;; 
 
 ;; constants
+(define-constant contract-deployer tx-sender)
 (define-constant err_stx_transfer u100)
 (define-constant err_not_owner u101)
+(define-constant err-contract-deployer-only u102)
 
 ;; data maps and vars
 (define-data-var billboard-message (string-utf8 500) u"hello world!" )
@@ -48,7 +50,17 @@
 (define-public (stx-balance) 
 
  (ok (stx-get-balance (as-contract tx-sender)))
+)
+ 
+(define-public (withdraw (amount uint) (recipient principal))
+  (begin 
+    ;;  (asserts! (is-eq tx-sender contract-deployer) err-contract-deployer-only)
+     (as-contract (stx-transfer? (stx-get-balance tx-sender) tx-sender recipient)) 
 
+    
+  )
+  
+  
 )
 
 
